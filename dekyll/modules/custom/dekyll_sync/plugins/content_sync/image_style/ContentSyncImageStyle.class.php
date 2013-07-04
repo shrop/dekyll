@@ -48,7 +48,11 @@ class ContentSyncImageStyle extends ContentSyncImage {
           // Create the image in the right style.
           $uri = image_style_url($style_name, $file['uri']);
 
-          file_put_contents($image_full_path . '/' . $style_name . '-' . $file['filename'], file_get_contents($uri));
+          $real_path = drupal_realpath($uri);
+
+          $contents = file_exists($real_path) ? $real_path : file_get_contents($uri);
+          file_put_contents($image_full_path . '/' . $style_name . '-' . $file['filename'], $contents);
+
           // Add the new file names.
           $file_name = $image_path . '/' . $style_name . '-' . $file['filename'];
           $file_names[] = $file_name;
