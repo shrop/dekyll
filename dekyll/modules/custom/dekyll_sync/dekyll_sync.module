@@ -271,13 +271,6 @@ function dekyll_sync_get_files_for_export(EntityDrupalWrapper $wrapper, &$info =
 
   // Allow other modules to change the array.
   drupal_alter('dekyll_sync_get_files_for_export', $info);
-
-  // Filter out entities that should not be created as pages.
-  foreach ($info as $key => $value) {
-    if (empty($value['page'])) {
-      // unset($info[$key]);
-    }
-  }
 }
 
 /**
@@ -378,7 +371,7 @@ function _dekyll_sync_execute_export_handlers($branch_id, $is_canonical, $files_
         // We've reached a new page, so re-iterate over the whole "files-info"
         // and build the new page.
         $pages[$child_info['entity_id']] = TRUE;
-        _dekyll_sync_execute_export_handlers($branch_id, $is_canonical, $complete_files_info, $file_names, $yaml, $text, $file_path, TRUE);
+        _dekyll_sync_execute_export_handlers($branch_id, $is_canonical, $complete_files_info, $file_names, $yaml, $text, $child_info['file_path'], TRUE);
       }
 
       // Continue digging into the tree, pass it the child as the "files-info".
