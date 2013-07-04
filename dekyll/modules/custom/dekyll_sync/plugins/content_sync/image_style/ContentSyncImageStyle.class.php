@@ -50,8 +50,13 @@ class ContentSyncImageStyle extends ContentSyncImage {
 
           $real_path = drupal_realpath($uri);
 
-          $contents = file_exists($real_path) ? $real_path : file_get_contents($uri);
-          file_put_contents($image_full_path . '/' . $style_name . '-' . $file['filename'], $contents);
+          if (file_exists($real_path)) {
+            // Copy the existing file.
+            file_unmanaged_copy($real_path, $image_full_path . '/' . $style_name . '-' . $file['filename']);
+          }
+          else {
+            file_put_contents($image_full_path . '/' . $style_name . '-' . $file['filename'], file_get_contents($uri));
+          }
 
           // Add the new file names.
           $file_name = $image_path . '/' . $style_name . '-' . $file['filename'];
